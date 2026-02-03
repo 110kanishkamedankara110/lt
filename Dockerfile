@@ -1,10 +1,8 @@
-# Use official PHP image with required extensions
 FROM php:8.2-fpm
 
-# Set working directory
 WORKDIR /var/www/html
 
-# Install system dependencies
+# System deps
 RUN apt-get update && apt-get install -y \
     git \
     unzip \
@@ -13,20 +11,22 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     libpng-dev \
     libxml2-dev \
-    && docker-php-ext-install zip pdo_mysql mbstring exif pcntl bcmath gd
+    && docker-php-ext-install \
+        zip pdo_mysql mbstring exif pcntl bcmath gd
 
-# Install Composer
+# Composer
 COPY --from=composer:2.6 /usr/bin/composer /usr/bin/composer
 
-# Copy app files
+# Copy app
 COPY . .
 
-# Set permissions (optional but recommended)
-RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 755 /var/www/html
+# Install dependencies
+RUN composer install --no-dev --optimize-autoloader
 
-# Expose port (optional; Coolify handles this)
-EXPOSE 8000
+# Permissions
+RUN chown -R www-data:www-data storage bootstrap/cache \
+    && chmod -R 775 storage bootstrap/cache
 
-# Start PHP-FPM
+EXPOSE 9000
+
 CMD ["php-fpm"]
