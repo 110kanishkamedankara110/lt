@@ -36,6 +36,8 @@ use App\Services\TeacherService;
 use App\Services\TituteService;
 use App\Services\UserTypesService;
 
+use Illuminate\Support\Facades\URL;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -147,7 +149,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // මෙම line එක add කරන්න
+        // Fix database migration string length
         Schema::defaultStringLength(191);
+
+        // Force HTTPS in production
+        if (app()->environment('production')) {
+            URL::forceScheme('https');
+        }
     }
 }
