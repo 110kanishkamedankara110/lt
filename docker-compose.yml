@@ -12,5 +12,5 @@ services:
       - uploads_volume_app1:/var/www/html/public/uploads
 
 volumes:
-  storage_volume_app2:
-  uploads_volume_app2:
+  storage_volume_app1:
+  uploads_volume_app1:
