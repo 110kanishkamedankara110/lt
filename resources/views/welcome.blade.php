@@ -373,7 +373,7 @@
             font-size: 0.7rem;
         }
 
-        /* Right Section */
+        /* Right Section - Updated with Video */
         .right-section {
             display: flex;
             flex-direction: column;
@@ -383,7 +383,7 @@
 
         .logo-container-main {
             position: relative;
-            margin-bottom: 3rem;
+            margin-bottom: 2rem;
         }
 
         .logo {
@@ -401,6 +401,84 @@
             background: radial-gradient(circle, rgba(16, 185, 129, 0.3) 0%, transparent 70%);
             z-index: -1;
             animation: pulse 4s infinite alternate;
+        }
+
+        /* Video Demo Container */
+        .video-demo-container {
+            margin-top: 2rem;
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 2px solid rgba(16, 185, 129, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            background: #000;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .video-wrapper:hover {
+            border-color: var(--accent-green);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(16, 185, 129, 0.3);
+        }
+
+        .video-wrapper video {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .video-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .play-button-container {
+            text-align: center;
+        }
+
+        .play-button {
+            width: 60px;
+            height: 60px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            transition: all 0.3s;
+        }
+
+        .video-overlay:hover .play-button {
+            transform: scale(1.1);
+            background: #0da271;
+        }
+
+        .play-button i {
+            color: white;
+            font-size: 1.5rem;
+            margin-left: 5px;
         }
 
         .stats-container {
@@ -428,7 +506,7 @@
             letter-spacing: 1px;
         }
 
-        /* System Features Section - Updated */
+        /* System Features Section */
         .features-section {
             padding: 4rem 2rem;
             background: rgba(255, 255, 255, 0.03);
@@ -882,33 +960,6 @@
             letter-spacing: 1px;
         }
 
-        /* Responsive Design for Clients Section */
-        @media (max-width: 768px) {
-            .clients-grid {
-                grid-template-columns: 1fr;
-                max-width: 400px;
-            }
-
-            .client-stats-banner .stats-container {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 1rem;
-            }
-
-            .client-stats-banner .stat-number {
-                font-size: 2rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .client-stats-banner .stats-container {
-                grid-template-columns: 1fr;
-            }
-
-            .client-card {
-                padding: 1.5rem;
-            }
-        }
-
         /* Footer */
         .footer {
             padding: 3rem 2rem;
@@ -1079,6 +1130,11 @@
             .platform-comparison {
                 grid-template-columns: 1fr;
             }
+
+            .video-demo-container {
+                max-width: 500px;
+                margin: 2rem auto;
+            }
         }
 
         @media (max-width: 768px) {
@@ -1130,6 +1186,15 @@
             .logo {
                 max-width: 300px;
             }
+
+            .client-stats-banner .stats-container {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+
+            .client-stats-banner .stat-number {
+                font-size: 2rem;
+            }
         }
 
         @media (max-width: 480px) {
@@ -1153,6 +1218,14 @@
                 min-width: 250px;
                 padding: 1.5rem;
             }
+
+            .client-stats-banner .stats-container {
+                grid-template-columns: 1fr;
+            }
+
+            .client-card {
+                padding: 1.5rem;
+            }
         }
     </style>
 </head>
@@ -1171,10 +1244,7 @@
 
         <div class="nav-links">
             <a href="{{ url('/') }}" class="nav-link active">Home</a>
-            {{-- <a href="{{ route('mobile-app') }}" class="nav-link">Mobile App</a> --}}
-            {{-- <a href="{{ route('web-platform') }}" class="nav-link">Web Platform</a> --}}
             <a href="{{ route('pricing') }}" class="nav-link">Pricing</a>
-            {{-- <a href="{{ route('interactive-learning') }}" class="nav-link">Features</a> --}}
         </div>
     </nav>
 
@@ -1182,10 +1252,7 @@
     <div class="mobile-menu" id="mobileMenu">
         <div class="mobile-nav-links">
             <a href="{{ url('/') }}" class="mobile-nav-link">Home</a>
-            {{-- <a href="{{ route('mobile-app') }}" class="mobile-nav-link">Mobile App</a>
-            <a href="{{ route('web-platform') }}" class="mobile-nav-link">Web Platform</a> --}}
             <a href="{{ route('pricing') }}" class="mobile-nav-link">Pricing</a>
-            {{-- <a href="{{ route('interactive-learning') }}" class="mobile-nav-link">Features</a> --}}
         </div>
     </div>
 
@@ -1224,7 +1291,6 @@
                 </p>
 
                 <!-- Features Grid -->
-                {{-- {{ route('mobile-app') }} --}}
                 <div class="features-grid">
                     <a href="#" class="feature-btn">
                         <div class="feature-icon">
@@ -1237,7 +1303,6 @@
                         </span>
                     </a>
 
-                    {{-- {{ route('web-platform') }} --}}
                     <a href="#" class="feature-btn">
                         <div class="feature-icon">
                             <i class="fas fa-desktop"></i>
@@ -1281,6 +1346,36 @@
                 <div class="logo-container-main">
                     <div class="logo-glow"></div>
                     <img src="{{ asset('uploads/logo/white_logo.png') }}" alt="NEXORA Education System" class="logo">
+                </div>
+
+                <!-- Video Demo Section -->
+                <div class="video-demo-container">
+                    <h3 style="color: var(--accent-green); margin-bottom: 1rem; font-size: 1.2rem;">
+                        <i class="fas fa-play-circle"></i> System Demo Video
+                    </h3>
+
+                    <div class="video-wrapper" id="videoWrapper">
+                        <video id="systemDemoVideo" controls preload="metadata"
+                            style="width: 100%; height: auto; display: block;">
+                            <source src="{{ asset('uploads/videos/system.mp4') }}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+
+                        <div class="video-overlay" id="videoOverlay">
+                            <div class="play-button-container">
+                                <div class="play-button">
+                                    <i class="fas fa-play"></i>
+                                </div>
+                                <p style="color: white; font-weight: 600;">Watch System Demo</p>
+                                <p style="color: #cbd5e1; font-size: 0.9rem;">(13 minutes)</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p style="color: #94a3b8; font-size: 0.85rem; margin-top: 0.75rem;">
+                        <i class="fas fa-info-circle" style="color: var(--accent-green);"></i>
+                        See how our system works in 13 minutes
+                    </p>
                 </div>
 
                 <div class="stats-container">
@@ -1333,8 +1428,7 @@
                         <li><i class="fas fa-check"></i> Exam Results & Timetable</li>
                         <li><i class="fas fa-check"></i> Push Notifications</li>
                     </ul>
-                    <a href="#" class="btn btn-primary"
-                        style="width: 100%; margin-top: 1.5rem;">
+                    <a href="#" class="btn btn-primary" style="width: 100%; margin-top: 1.5rem;">
                         <i class="fas fa-external-link-alt"></i> Explore Mobile App
                     </a>
                 </div>
@@ -1356,8 +1450,7 @@
                         <li><i class="fas fa-check"></i> Advanced Analytics & Reports</li>
                         <li><i class="fas fa-check"></i> Bulk Operations</li>
                     </ul>
-                    <a href="#" class="btn btn-primary"
-                        style="width: 100%; margin-top: 1.5rem;">
+                    <a href="#" class="btn btn-primary" style="width: 100%; margin-top: 1.5rem;">
                         <i class="fas fa-external-link-alt"></i> Explore Web Platform
                     </a>
                 </div>
@@ -1557,10 +1650,7 @@
         <footer class="footer">
             <div class="footer-links">
                 <a href="{{ url('/') }}" class="footer-link">Home</a>
-                {{-- <a href="{{ route('mobile-app') }}" class="footer-link">Mobile App</a> --}}
-                {{-- <a href="{{ route('web-platform') }}" class="footer-link">Web Platform</a> --}}
                 <a href="{{ route('pricing') }}" class="footer-link">Pricing</a>
-                {{-- <a href="{{ route('interactive-learning') }}" class="footer-link">Features</a> --}}
                 <a href="{{ route('login') }}" class="footer-link">Login</a>
             </div>
             <p>&copy; 2024 NEXORA Education System. All rights reserved.</p>
@@ -1733,6 +1823,65 @@
             });
         }
 
+        // Video player functionality
+        function setupVideoPlayer() {
+            const video = document.getElementById('systemDemoVideo');
+            const overlay = document.getElementById('videoOverlay');
+            const videoWrapper = document.getElementById('videoWrapper');
+
+            // Ensure video loads properly
+            video.addEventListener('loadeddata', function () {
+                console.log('Video loaded successfully');
+            });
+
+            video.addEventListener('error', function (e) {
+                console.error('Video error:', e);
+                console.log('Video source:', video.querySelector('source').src);
+
+                // Fallback to direct URL if asset() fails
+                if (video.querySelector('source').src.includes('asset')) {
+                    const videoElement = document.getElementById('systemDemoVideo');
+                    const sourceElement = videoElement.querySelector('source');
+                    sourceElement.src = '/uploads/videos/system.mp4';
+                    videoElement.load();
+                }
+            });
+
+            // Play video when overlay is clicked
+            overlay.addEventListener('click', function () {
+                video.play().catch(function (error) {
+                    console.error('Error playing video:', error);
+                });
+                overlay.classList.add('hidden');
+            });
+
+            // Show overlay when video ends
+            video.addEventListener('ended', function () {
+                overlay.classList.remove('hidden');
+            });
+
+            // Show overlay when video is paused
+            video.addEventListener('pause', function () {
+                if (!video.ended) {
+                    overlay.classList.remove('hidden');
+                }
+            });
+
+            // Hide overlay when video is playing
+            video.addEventListener('play', function () {
+                overlay.classList.add('hidden');
+            });
+
+            // Touch/click on video wrapper to play
+            videoWrapper.addEventListener('click', function (e) {
+                if (e.target === videoWrapper || e.target === overlay) {
+                    video.play().catch(function (error) {
+                        console.error('Error playing video:', error);
+                    });
+                }
+            });
+        }
+
         // Mobile menu toggle
         const mobileMenuBtn = document.getElementById('mobileMenuBtn');
         const mobileMenu = document.getElementById('mobileMenu');
@@ -1776,6 +1925,7 @@
             createParticles();
             animateStatistics();
             generateFeaturesScroller();
+            setupVideoPlayer();
 
             // Update nav link active state
             const currentPath = window.location.pathname;
