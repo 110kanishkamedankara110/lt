@@ -3,23 +3,22 @@ FROM php:8.2-apache
 # Enable Apache rewrite
 RUN a2enmod rewrite
 
-# Install system dependencies REQUIRED by Composer
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     git \
     unzip \
     zip \
     curl \
     libzip-dev \
-    libpng-dev \
     libonig-dev \
+    libpng-dev \
     libxml2-dev \
-    && docker-php-ext-install \
-        pdo \
-        pdo_mysql \
-        zip \
-        mbstring \
-        bcmath \
-        gd \
+    libicu-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
+    build-essential \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install pdo pdo_mysql mbstring bcmath gd zip intl \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Composer (single correct method)
