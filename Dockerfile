@@ -1,57 +1,48 @@
-# PHP 8.2 with Apache
 FROM php:8.2-apache
 
-# Enable required Apache modules
-RUN a2enmod rewrite headers
+# Enable Apache rewrite
+RUN a2enmod rewrite
 
-# Install system & PHP dependencies for Laravel
+# Install system dependencies REQUIRED by Composer
 RUN apt-get update && apt-get install -y \
     git \
     unzip \
+    zip \
     curl \
     libzip-dev \
-    libonig-dev \
     libpng-dev \
+    libonig-dev \
     libxml2-dev \
     && docker-php-ext-install \
         pdo \
         pdo_mysql \
         zip \
         mbstring \
-        exif \
-        pcntl \
         bcmath \
         gd \
-    && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Set working directory
+# Install Composer (single correct method)
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
+# Set working directory for Laravel
 WORKDIR /var/www/html
 
-# Copy Laravel project
-COPY --chown=www-data:www-data . .
+# Copy project files
+COPY . .
 
-# Laravel must be served from /public
+# Install Laravel dependencies
+RUN composer install --no-interaction --prefer-dist --optimize-autoloader
+
+# Apache should serve /public
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
-
-# Update Apache DocumentRoot
 RUN sed -ri 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' \
     /etc/apache2/sites-available/*.conf \
     /etc/apache2/apache2.conf
 
-# Allow Laravel public directory
-RUN printf '<Directory /var/www/html/public>\n\
-    AllowOverride All\n\
-    Require all granted\n\
-</Directory>\n' >> /etc/apache2/apache2.conf
-
 # Fix Laravel permissions
-RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 755 /var/www/html \
+RUN chown -R www-data:www-data storage bootstrap/cache \
     && chmod -R 775 storage bootstrap/cache
 
-# Expose Apache
 EXPOSE 80
-
-# Start Apache
 CMD ["apache2-foreground"]
