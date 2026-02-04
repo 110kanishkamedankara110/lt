@@ -13,7 +13,7 @@ services:
       - ./:/var/www/html
     depends_on: []
     ports:
-      - "80:8000"  # Coolify will handle routing
+      - "8000:80"  # Coolify will handle routing
 
 volumes:
   storage_volume:
