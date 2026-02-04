@@ -6,7 +6,7 @@ services:
     container_name: laravel_app
     restart: always
     ports:
-      - "8002:80"
+      - "8003:80"
     volumes:
       - storage_volume:/var/www/html/storage
       - uploads_volume:/var/www/html/public/uploads
